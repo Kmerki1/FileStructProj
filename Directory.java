@@ -6,6 +6,7 @@ public class Directory implements AbstractFile {
     ArrayList<AbstractFile> includedFiles = new ArrayList<AbstractFile>();
 
     public Directory(String name) {
+        this.name = name;
         File f1 = new File(name);
         boolean bool = f1.mkdir();
         if (bool) {
