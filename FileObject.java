@@ -17,7 +17,9 @@ public class FileObject implements AbstractFile {
             e.printStackTrace();
         }
     }
-
+    public String getName(){
+        return name;
+    }
     public void ls() {
         System.out.println("File: " + name);
     }

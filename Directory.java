@@ -26,4 +26,17 @@ public class Directory implements AbstractFile {
     public void add(AbstractFile file) {
         includedFiles.add(file);
     }
+    public String getName(){
+        return name;
+    }
+
+
+    public void delete(String target){//deletes a file or folder in the directory
+        for(int i = 0; i<includedFiles.size(); i++){
+            if(includedFiles.get(i).getName() == target){
+                includedFiles.remove(i);
+            }
+        }
+
+    }
 }
