@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
 
 public class TerminalInterface {
     public static void main(String[] args) {
@@ -20,7 +22,23 @@ public class TerminalInterface {
             // Process user command
             switch (command.toLowerCase()) {
                 case "create":
-                    // Implement create files or folders functionality
+                    System.out.println("Do you want to create a file or a directory?: ");
+                    System.out.print("Enter 'file' or 'directory': ");
+                    String fileType = scanner.nextLine().toLowerCase();
+
+                    if (!fileType.equals("file") && !fileType.equals("directory")) {
+                        System.out.println("Invalid choice! Please enter 'file' or 'directory' instead. Thank you!");
+                        break;
+                    }
+
+                    System.out.print("Enter the name of the " + fileType + ": ");
+                    String name = scanner.nextLine();
+
+                    if (fileType.equals("file")) {
+                        FileObject file = new FileObject(name);
+                    } else if (fileType.equals("directory")) {
+                        Directory directory = new Directory(name);
+                    }
                     break;
                 case "view":
                     break;
