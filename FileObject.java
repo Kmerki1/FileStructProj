@@ -22,6 +22,9 @@ public class FileObject implements AbstractFile {
     public String getName(){
         return name;
     }
+    public String getInfo(){
+        return "File: " +name;
+    }
     public void delete(){//deletes a file or folder in the directory
         if (file.delete()) { 
             System.out.println("Deleted the file: " + file.getName());

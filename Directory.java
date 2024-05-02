@@ -19,9 +19,9 @@ public class Directory implements AbstractFile {
     }
 
     public void ls() {
-        System.out.println("Directory: " + name);
+        System.out.println("Current Directory: " + name);
         for (int i = 0; i < includedFiles.size(); i++) {
-            includedFiles.get(i).ls();
+            System.out.println(includedFiles.get(i).getInfo());
         }
     }
 
@@ -31,11 +31,14 @@ public class Directory implements AbstractFile {
     public String getName(){
         return name;
     }
+    public String getInfo(){//what gets returned when parent directory calls ls()
+        return "Sub-directory: " + name;
+    }
 
     //this method is used to delete items within a parent directory
     public void deleteTarget(String target){//calls the proper delete function on an AbstractFile within THIS directory, searched by name
         for(int i = 0; i<includedFiles.size(); i++){
-            if(includedFiles.get(i).getName() == target){
+            if(includedFiles.get(i).getName().equalsIgnoreCase(target)){
                 includedFiles.get(i).delete();
                 includedFiles.remove(i);//removes the target from this directories array
             }
@@ -49,5 +52,23 @@ public class Directory implements AbstractFile {
         }
         includedFiles.clear();//deletes the array references to all objects in this directory
         directory.delete();//delete the directory itself
+        System.out.println("Directoy: " + name + " deleted");
+    }
+
+    public boolean search(String target){//simply returns true if target is found or false otherwise
+        for(int i = 0; i<includedFiles.size(); i++){
+            if(includedFiles.get(i).getName().equalsIgnoreCase(target)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public AbstractFile getFile(String target){//returns the whole fileObject or Directory, null if not found, should be used after search returns true
+        for(int i = 0; i<includedFiles.size(); i++){
+            if(includedFiles.get(i).getName().equalsIgnoreCase(target)){
+                return includedFiles.get(i);
+            }
+        }
+        return null;
     }
 }
