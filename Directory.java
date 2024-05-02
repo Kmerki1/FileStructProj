@@ -41,6 +41,8 @@ public class Directory implements AbstractFile {
             if(includedFiles.get(i).getName().equalsIgnoreCase(target)){
                 includedFiles.get(i).delete();
                 includedFiles.remove(i);//removes the target from this directories array
+            }else{
+                System.out.println("No such file or directory");
             }
         }
 
