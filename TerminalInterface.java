@@ -65,41 +65,25 @@ public class TerminalInterface {
                     }
                     break;
                 case "delete":
-                    System.out.println("Do you want to delete a file or a directory?");
-                    System.out.print("Enter 'file' or 'directory': ");
-                    String targetType = scanner.nextLine().toLowerCase();
-                    if (!targetType.equals("file") && !targetType.equals("directory")) {
-                        System.out.println("Invalid choice! Please enter 'file' or 'directory'. Thank you!");
-                        break;
-                    }
-                
-                    System.out.print("Enter the name of the " + targetType + " to delete: ");
-                    String deleteTargetName = scanner.nextLine();
+                    System.out.print("Enter the name of the file or directory you want to delete: ");
+                    String deleteTarget = scanner.nextLine();
 
-                    System.out.println("Included files: " + includedFiles); // Debug output
+                    boolean found = false;
 
-                
-                    AbstractFile target = null;
-                
                     for (AbstractFile file : includedFiles) {
-                        if (file.getName().equals(deleteTargetName)) {
-                            target = file;
+                        if (file.getName().equals(deleteTarget)) {
+                            file.delete();
+                            includedFiles.remove(file);
+                            found = true;
+                            System.out.println(deleteTarget + " deleted successfully!");
                             break;
                         }
                     }
-                
-                    if (target == null) {
-                        System.out.println("The specified file or directory was not found.");
-                    } else {
-                        if (targetType.equals("file")) {
-                            target.delete();
-                        } else if (targetType.equals("directory")) {
-                            ((Directory) target).delete(); // Cast target to Directory and call delete() on it
-                        }
-                        includedFiles.remove(target);
-                        System.out.println(targetType + " '" + deleteTargetName + "' deleted successfully!");
+
+                    if (!found) {
+                        System.out.println("File or directory not found.");
                     }
-                break;
+                    break;
                 case "exit":
                     System.out.println("Exiting...");
                     running = false;
