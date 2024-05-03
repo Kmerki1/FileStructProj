@@ -46,6 +46,35 @@ public class TerminalInterface {
                         includedFiles.add(directory);
                     }
                     break;
+                case "write":
+                    System.out.println("Enter the name of the file you want to write to: ");
+                    String fileName = scanner.nextLine();
+
+                    AbstractFile fileToWrite = null;
+                    for (AbstractFile file : includedFiles) {
+                        if (file.getName().equals(fileName)) {
+                            fileToWrite = file;
+                            break;
+                        }
+                    }
+
+                    if (fileToWrite == null || !(fileToWrite instanceof FileObject)) {
+                        System.out.println("File not found or it is not writable.");
+                        break;
+                    }
+
+                    FileObject writableFile = (FileObject) fileToWrite;
+
+                    System.out.println("Enter the content you want to write to the file (type 'done' to finish): ");
+                    StringBuilder contentBuilder = new StringBuilder();
+                    String line;
+
+                    while (!(line = scanner.nextLine()).equalsIgnoreCase("done")) {
+                        contentBuilder.append(line).append(System.lineSeparator());
+                    }
+
+                    writableFile.writeToFile(contentBuilder.toString());
+                    break;
                 case "view":
                     System.out.println("Do you want to view files or directories?");
                     System.out.print("Enter 'files' or 'directories': ");
@@ -57,7 +86,6 @@ public class TerminalInterface {
                     }
 
                     if (viewType.equals("files")) {
-                        System.out.println("Listing files: ");
                         viewFiles();
                     } else if (viewType.equals("directories")) {
                         System.out.println("Listing directories: ");
@@ -124,6 +152,7 @@ public class TerminalInterface {
     private static void displayMenu() {
         System.out.println("Commands:");
         System.out.println("- create: Create files or folders");
+        System.out.println("- write: Write to files");
         System.out.println("- view: View files or folders");
         System.out.println("- delete: Delete files or folders");
         System.out.println("- exit: Exit the program");

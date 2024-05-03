@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.FileWriter;
 
 public class FileObject implements AbstractFile {
     String name;
@@ -34,5 +35,17 @@ public class FileObject implements AbstractFile {
 
     public void ls() {
         System.out.println("File: " + name);
+    }
+
+    // write to file; Ina
+    public void writeToFile(String content) {
+        try (FileWriter writer = new FileWriter(name, true)) {
+            writer.write(content);
+            writer.write(System.lineSeparator());
+            System.out.println("Content written to the file successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while trying to write to the file.");
+            e.printStackTrace();
+        }
     }
 }
