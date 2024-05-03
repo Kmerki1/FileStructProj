@@ -24,6 +24,10 @@ public class FileObject implements AbstractFile {
         return name;
     }
 
+    public String getInfo() {
+        return "File: " + name;
+    }
+
     public void delete() {
         File file = new File(name);
         if (file.delete()) {  //deletes a file or folder in the directory
@@ -46,6 +50,20 @@ public class FileObject implements AbstractFile {
         } catch (IOException e) {
             System.out.println("An error occurred while trying to write to the file.");
             e.printStackTrace();
+        }
+    }
+
+    // rename file; Ina
+    public void rename(String newName) {
+        String oldName = name;
+        File oldFile = new File(name);
+        File newFile = new File(newName);
+
+        if (oldFile.renameTo(newFile)) {
+            name = newName;
+            System.out.println(oldName + " renamed to " + newName);
+        } else {
+            System.out.println("Failed to rename " + name + " to " + newName);
         }
     }
 }
