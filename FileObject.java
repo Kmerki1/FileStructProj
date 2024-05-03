@@ -41,6 +41,10 @@ public class FileObject implements AbstractFile {
         System.out.println("File: " + name);
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // write to file; Ina
     public void writeToFile(String content) {
         try (FileWriter writer = new FileWriter(name, true)) {

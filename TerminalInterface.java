@@ -107,9 +107,27 @@ public class TerminalInterface {
                     writableFile.writeToFile(contentBuilder.toString());
                     break;
                 case "search":
-                    System.out.println("Enter the name of the file you want to search for: ");
-                    String searchName = scanner.nextLine();
-                    searchFile(searchName);
+                    System.out.print("Enter the name of the file or directory you want to search for: ");
+                    String searchTarget = scanner.nextLine();
+
+                    boolean searchFound = false;
+
+                    for (AbstractFile file : includedFiles) {
+                        if (file.getName().equalsIgnoreCase(searchTarget)) {
+                            System.out.println("Found: " + file.getInfo());
+                            searchFound = true;
+                        } else if (file instanceof Directory) {
+                            Directory directory = (Directory) file;
+                            if (directory.search(searchTarget)) {
+                                System.out.println("Found in directory " + directory.getName() + ": " + file.getInfo());
+                                searchFound = true;
+                            }
+                        }
+                    }
+                    
+                    if (!searchFound) {
+                        System.out.println("File or directory not found.");
+                    }
                     break;
                 case "rename":
                     System.out.println("Enter the name of the file you want to rename: ");
@@ -132,23 +150,10 @@ public class TerminalInterface {
                     }
                     break;
                 case "view":
-                    System.out.println("Do you want to view files or directories?");
-                    System.out.print("Enter 'files' or 'directories': ");
-                    String viewType = scanner.nextLine().toLowerCase();
-
-                    if (!viewType.equals("files") && !viewType.equals("directories")) {
-                        System.out.println("Invalid choice! Please enter 'files' or 'directories'. Thank you!");
-                        break;
-                    }
-
-                    if (viewType.equals("files")) {
-                        viewFiles();
-                    } else if (viewType.equals("directories")) {
-                        System.out.println("Listing directories: ");
-                        viewDirectories();
-                    }
+                    // To implement
                     break;
                 case "delete":
+                    // Delete switch case; works fine, I think
                     System.out.print("Enter the name of the file or directory you want to delete: ");
                     String deleteTarget = scanner.nextLine();
 
@@ -177,95 +182,11 @@ public class TerminalInterface {
             }
         }
 
-        // Close scanner
+        // close the scanner
         scanner.close();
     }
-
-    private static void viewFiles() {
-        File currentDirectory = new File(".");
-
-        File[] files = currentDirectory.listFiles();
-        System.out.println("Listing files: ");
-        for (File file : files) {
-            if (file.isFile()) {
-                System.out.println(file.getName());
-            }
-        }
-    }
-
-    private static void viewDirectories() {
-        File currentDirectory = new File(".");
-
-        File[] files = currentDirectory.listFiles();
-        System.out.println("Listing directories:");
-        for (File file : files) {
-            if (file.isDirectory()) {
-                System.out.println(file.getName());
-            }
-        }
-    }
-
-    // searching for files
-    private static void searchFile(String name) {
-        boolean found = false;
-
-        for (AbstractFile file : includedFiles) {
-            if (file.getInfo().equalsIgnoreCase("File: " + name)) {
-                System.out.println("File found: " + name);
-                found = true;
-                break;
-            } else if (file instanceof Directory) {
-                Directory directory = (Directory) file;
-                for (AbstractFile innerFile : directory.getIncludedFiles()) {
-                    if (innerFile.getInfo().equalsIgnoreCase("File: " + name)) {
-                        System.out.println("File found: " + name + " found in " + directory.getName());
-                        found = true;
-                        break;
-                    }
-                }
-            }
-        }
-        if (!found) {
-            System.out.println("File not found: " + name);
-        }
-    }
-
-    /*
-    // function to rename file
-    private static void renameFile(String oldName, String newName) {
-        boolean found = false;
-
-        for (AbstractFile file : includedFiles) {
-            if (file.getName().equalsIgnoreCase(oldName)) {
-                File oldFile = new File(oldName);
-                File newFile = new File(newName);
-
-                if (oldFile.renameTo(newFile)) {
-                    file.setName(newName);
-                    System.out.println(oldName + " renamed to " + newName);
-                    found = true;
-                } else {
-                    System.out.println("Failed to rename " + oldName + " to " + newName);
-                }
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("File not found: " + oldName);
-        }
-    }
-    */
-
-    // function to check if the file exists
-    private static boolean fileExists(String name) {
-        for (AbstractFile file : includedFiles) {
-            if (file.getName().equalsIgnoreCase(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
+    
+    // this is the display menu for the user to select from the switch cases; Ina
     private static void displayMenu() {
         System.out.println("Commands:");
         System.out.println("- create: Create files or folders");
