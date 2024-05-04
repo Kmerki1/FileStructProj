@@ -41,6 +41,8 @@ public class Directory implements AbstractFile {
             if(includedFiles.get(i).getName().equalsIgnoreCase(target)){
                 includedFiles.get(i).delete();
                 includedFiles.remove(i);//removes the target from this directories array
+            }else{
+                System.out.println("No such file or directory");
             }
         }
 
@@ -52,7 +54,7 @@ public class Directory implements AbstractFile {
         }
         includedFiles.clear();//deletes the array references to all objects in this directory
         directory.delete();//delete the directory itself
-        System.out.println("Directoy: " + name + " deleted");
+        System.out.println("Directory: " + name + " deleted");
     }
 
     public boolean search(String target){//simply returns true if target is found or false otherwise
