@@ -91,4 +91,17 @@ public class Directory implements AbstractFile {
         }
         return null;
     }
+
+    public void rename(String newName) {
+        String prevDir = name;
+        File oldDir = new File(name);
+        File newDir = new File(newName);
+
+        if (oldDir.renameTo(newDir)) {
+            name = newName;
+            System.out.println("Directory " + prevDir + " renamed to: " + newName);
+        } else {
+            System.out.println("Failed to rename directory.");
+        }
+    }
 }

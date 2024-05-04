@@ -20,11 +20,9 @@ public class TerminalInterface {
         // Continue accepting commands until the user exits
         boolean running = true;
         while (running) {
-            // Prompt user for input
             System.out.print("Enter a command: ");
             String command = scanner.nextLine();
 
-            // Process user command
             switch (command.toLowerCase()) {
                 case "create":
                     System.out.println("Do you want to create a file or a directory?: ");
@@ -124,29 +122,33 @@ public class TerminalInterface {
                             }
                         }
                     }
-                    
+
                     if (!searchFound) {
                         System.out.println("File or directory not found.");
                     }
                     break;
                 case "rename":
-                    System.out.println("Enter the name of the file you want to rename: ");
+                    System.out.print("Enter the name of the file you want to rename: ");
                     String oldName = scanner.nextLine();
-                    System.out.println("Enter the new name for the file: ");
+                    System.out.print("Enter the new name for the file: ");
                     String newName = scanner.nextLine();
                     
-                    boolean nameFound = false;
+                    boolean renamed = false;
 
                     for (AbstractFile file : includedFiles) {
-                        if (file.getName().equalsIgnoreCase(oldName) && file instanceof FileObject) {
-                            FileObject fileObject = (FileObject) file;
-                            fileObject.rename(newName);
-                            nameFound = true;
-                            break;
+                        if (file.getName().equalsIgnoreCase(oldName)) {
+                            if (file instanceof FileObject) {
+                                FileObject fileObject = (FileObject) file;
+                                fileObject.rename(newName);
+                            } else if (file instanceof Directory) {
+                                Directory directory = (Directory) file;
+                                directory.rename(newName);
+                            }
                         }
+                        renamed = true;
                     }
-                    if (!nameFound) {
-                        System.out.println("File not found or cannot be renamed.");
+                    if (!renamed) {
+                        System.out.println("File not found or directory not found.");
                     }
                     break;
                 case "view":
