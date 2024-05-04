@@ -35,6 +35,13 @@ public class Directory implements AbstractFile {
         return "Sub-directory: " + name;
     }
 
+    
+    public ArrayList<AbstractFile> getIncludedFiles() {
+        return includedFiles;
+    }
+
+
+
     //this method is used to delete items within a parent directory
     public void deleteTarget(String target){//calls the proper delete function on an AbstractFile within THIS directory, searched by name
         for(int i = 0; i<includedFiles.size(); i++){
@@ -43,9 +50,23 @@ public class Directory implements AbstractFile {
                 includedFiles.remove(i);//removes the target from this directories array
             }else{
                 System.out.println("No such file or directory");
+
             }
         }
+        return null;
+    }
 
+    public void rename(String newName) {
+        String prevDir = name;
+        File oldDir = new File(name);
+        File newDir = new File(newName);
+
+        if (oldDir.renameTo(newDir)) {
+            name = newName;
+            System.out.println("Directory " + prevDir + " renamed to: " + newName);
+        } else {
+            System.out.println("Failed to rename directory.");
+        }
     }
     //this method is what is called by parent directories for deletion
     public void delete(){//called when PARENT directories delete this directory, deletes the directory and EVERYTHING within it
