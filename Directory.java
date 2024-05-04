@@ -54,7 +54,7 @@ public class Directory implements AbstractFile {
         }
         includedFiles.clear();//deletes the array references to all objects in this directory
         directory.delete();//delete the directory itself
-        System.out.println("Directoy: " + name + " deleted");
+        System.out.println("Directory: " + name + " deleted");
     }
 
     public boolean search(String target){//simply returns true if target is found or false otherwise
