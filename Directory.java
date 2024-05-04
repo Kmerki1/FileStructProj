@@ -19,7 +19,7 @@ public class Directory implements AbstractFile {
     }
 
     public void ls() {
-        System.out.println("Current directory: " + name);
+        System.out.println("Current Directory: " + name);
         for (int i = 0; i < includedFiles.size(); i++) {
             System.out.println(includedFiles.get(i).getInfo());
         }
@@ -31,62 +31,26 @@ public class Directory implements AbstractFile {
     public String getName(){
         return name;
     }
-
-    public String getInfo() {
-        return "Directory: " + name;
+    public String getInfo(){//what gets returned when parent directory calls ls()
+        return "Sub-directory: " + name;
     }
 
-
-    // this method is used to delete items within a parent directory
-    public void deleteTarget(String target) { // calls the proper delete function on an AbstractFile within THIS directory, searched by name
-        for (int i = 0; i < includedFiles.size(); i++) {
-            if (includedFiles.get(i).getName().equalsIgnoreCase(target)) {
-                includedFiles.get(i).delete();
-                includedFiles.remove(i);  //removes the target from this directories array
-            }
-        }
-    }
     
-    //this method is what is called by parent directories for deletion
-    public void delete() {  //called when PARENT directories delete this directory, deletes the directory and EVERYTHING within it
-        for (int i = 0; i < includedFiles.size(); i++) {
-            includedFiles.get(i).delete();
-        }
-
-        /*
-        includedFiles.clear();
-        directory.delete();
-        System.out.println("Directory: " + name + " deleted");
-         */
-        includedFiles.remove(this);
-        File directory = new File(name);
-        if (directory.exists() && directory.isDirectory()) {
-            directory.delete();
-        
-        }
-        /*
-        //includedFiles.clear(); //deletes the array references to all objects in this directory
-        includedFiles.delete(); //delete the directory itself
-        */
-    }
-
     public ArrayList<AbstractFile> getIncludedFiles() {
         return includedFiles;
     }
 
-    public boolean search(String target) {
-        for (int i = 0; i < includedFiles.size(); i++) {
-            if (includedFiles.get(i).getName().equalsIgnoreCase(target)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    public AbstractFile getFile(String target) {
-        for (int i = 0; i < includedFiles.size(); i++) {
-            if (includedFiles.get(i).getName().equalsIgnoreCase(target)) {
-                return includedFiles.get(i);
+
+    //this method is used to delete items within a parent directory
+    public void deleteTarget(String target){//calls the proper delete function on an AbstractFile within THIS directory, searched by name
+        for(int i = 0; i<includedFiles.size(); i++){
+            if(includedFiles.get(i).getName().equalsIgnoreCase(target)){
+                includedFiles.get(i).delete();
+                includedFiles.remove(i);//removes the target from this directories array
+            }else{
+                System.out.println("No such file or directory");
+
             }
         }
         return null;
@@ -103,5 +67,31 @@ public class Directory implements AbstractFile {
         } else {
             System.out.println("Failed to rename directory.");
         }
+    }
+    //this method is what is called by parent directories for deletion
+    public void delete(){//called when PARENT directories delete this directory, deletes the directory and EVERYTHING within it
+        for(int i = 0; i<includedFiles.size(); i++){
+            includedFiles.get(i).delete();//deletes ALL objects within this directory if PARENT directory calls deleteTarget with this directory as target
+        }
+        includedFiles.clear();//deletes the array references to all objects in this directory
+        directory.delete();//delete the directory itself
+        System.out.println("Directory: " + name + " deleted");
+    }
+
+    public boolean search(String target){//simply returns true if target is found or false otherwise
+        for(int i = 0; i<includedFiles.size(); i++){
+            if(includedFiles.get(i).getName().equalsIgnoreCase(target)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public AbstractFile getFile(String target){//returns the whole fileObject or Directory, null if not found, should be used after search returns true
+        for(int i = 0; i<includedFiles.size(); i++){
+            if(includedFiles.get(i).getName().equalsIgnoreCase(target)){
+                return includedFiles.get(i);
+            }
+        }
+        return null;
     }
 }
