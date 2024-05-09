@@ -93,7 +93,7 @@ public class TerminalInterface {
                     }
 
                     FileObject writableFile = (FileObject) fileToWrite;
-
+                    /*
                     System.out.println("Enter the content you want to write to the file (type 'done' to finish): ");
                     StringBuilder contentBuilder = new StringBuilder();
                     String line;
@@ -101,8 +101,8 @@ public class TerminalInterface {
                     while (!(line = scanner.nextLine()).equalsIgnoreCase("done")) {
                         contentBuilder.append(line).append(System.lineSeparator());
                     }
-
-                    writableFile.writeToFile(contentBuilder.toString());
+                    */
+                    writableFile.writeToFile(); //was param = contentBuilder.toString()
                     break;
                 case "search":
                     System.out.print("Enter the name of the file or directory you want to search for: ");
