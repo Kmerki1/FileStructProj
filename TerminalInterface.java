@@ -102,7 +102,7 @@ public class TerminalInterface {
                         contentBuilder.append(line).append(System.lineSeparator());
                     }
                     */
-                    writableFile.writeToFile(); //was param = contentBuilder.toString()
+                    writableFile.writeTo(); //was param = contentBuilder.toString()
                     break;
                 case "search":
                     System.out.print("Enter the name of the file or directory you want to search for: ");
