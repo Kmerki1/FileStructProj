@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,47 +35,39 @@ public class TerminalInterface {
                         break;
                     }
 
-                    if (fileType.equals("file")) {
-                        System.out.print("Do you want to create the file within a directory? (y/n): ");
-                        String createInDirectory = scanner.nextLine().toLowerCase();
+                    if (fileType.equals("file")){
+                        System.out.print("Enter the name of the file: ");
+                        String fileName = scanner.nextLine();
+                        FileObject file = new FileObject(fileName);
+                        includedFiles.add(file);
                         
-                        if (createInDirectory.equals("y")) {
-                            System.out.print("Enter the name of the directory where you want to create the file: ");
-                            String directoryName = scanner.nextLine();
-                            File directory = new File(directoryName);
-                            
-                            if (!directory.exists()) {
-                                System.out.println("Directory not found or invalid directory name.");
-                                break;
-                            }
-                            
-                            System.out.print("Enter the name of the file: ");
-                            String fileName = scanner.nextLine();
-                            File file = new File(directory, fileName);
-                            
-                            try {
-                                if (file.createNewFile()) {
-                                    System.out.println("File created: " + fileName + " in directory: " + directoryName);
-                                } else {
-                                    System.out.println("File already exists.");
-                                }
-                            } catch (IOException e) {
-                                System.out.println("An error occurred while creating the file.");
-                                e.printStackTrace();
-                            }
-                        } else {
-                            System.out.print("Enter the name of the file: ");
-                            String fileName = scanner.nextLine();
-                            FileObject file = new FileObject(fileName);
-                            includedFiles.add(file);
-                        }
-                    } else if (fileType.equals("directory")) {
+                    }else if (fileType.equals("directory")) {
                         System.out.print("Enter the name of the directory: ");
                         String name = scanner.nextLine();
                         Directory directory = new Directory(name);
                         includedFiles.add(directory);
                     }
                     break;
+
+                case "read":
+                System.out.println("Enter the name of the file you want to read (must include '.txt'): ");
+                String fName = scanner.nextLine();
+
+                AbstractFile fileToRead = null;
+                for (AbstractFile file : includedFiles) {
+                    if (file.getName().equals(fName)) {
+                        fileToRead = file;
+                        break;
+                    }
+                }
+
+                if (fileToRead == null || !(fileToRead instanceof FileObject)) {
+                    System.out.println("File not found or it is not readable.");
+                    break;
+                }
+                ((FileObject) fileToRead).read();
+                break;
+
                 case "write":
                     System.out.println("Enter the name of the file you want to write to: ");
                     String fileName = scanner.nextLine();

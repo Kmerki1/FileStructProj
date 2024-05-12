@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -25,6 +26,19 @@ public class FileObject implements AbstractFile {
         }
     }
 
+    public void read(){
+        try{
+            Scanner reader = new Scanner(f1);
+            while(reader.hasNextLine()){
+                String text = reader.nextLine();
+                System.out.println(text);
+            }
+            reader.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        
+    }
 
     public void writeTo() {
         try {
