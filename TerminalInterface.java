@@ -26,7 +26,7 @@ public class TerminalInterface {
 
             switch (command.toLowerCase()) {
                 case "create":
-                    System.out.println("Do you want to create a file or a directory?: ");
+                    System.out.println("Do you want to create a file or a directory?");
                     System.out.print("Enter 'file' or 'directory': ");
                     String fileType = scanner.nextLine().toLowerCase();
 
