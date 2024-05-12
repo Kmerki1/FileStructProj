@@ -9,7 +9,7 @@ public class TerminalInterface {
     
     private static List<AbstractFile> includedFiles = new ArrayList<>();
     public static void main(String[] args) {
-
+        Directory currDir = new Directory("root",null);
         Scanner scanner = new Scanner(System.in);
 
         // Display initial message or prompt
@@ -44,7 +44,7 @@ public class TerminalInterface {
                     }else if (fileType.equals("directory")) {
                         System.out.print("Enter the name of the directory: ");
                         String name = scanner.nextLine();
-                        Directory directory = new Directory(name);
+                        Directory directory = new Directory(name, currDir);
                         includedFiles.add(directory);
                     }
                     break;
@@ -69,33 +69,18 @@ public class TerminalInterface {
                 break;
 
                 case "write":
-                    System.out.println("Enter the name of the file you want to write to: ");
+                    System.out.println("Enter the name of the file you want to write to (must include '.txt'): ");
                     String fileName = scanner.nextLine();
 
-                    AbstractFile fileToWrite = null;
+                    
                     for (AbstractFile file : includedFiles) {
                         if (file.getName().equals(fileName)) {
-                            fileToWrite = file;
+                            ((FileObject) file).writeTo(scanner);
                             break;
                         }
                     }
 
-                    if (fileToWrite == null || !(fileToWrite instanceof FileObject)) {
-                        System.out.println("File not found or it is not writable.");
-                        break;
-                    }
 
-                    FileObject writableFile = (FileObject) fileToWrite;
-                    /*
-                    System.out.println("Enter the content you want to write to the file (type 'done' to finish): ");
-                    StringBuilder contentBuilder = new StringBuilder();
-                    String line;
-
-                    while (!(line = scanner.nextLine()).equalsIgnoreCase("done")) {
-                        contentBuilder.append(line).append(System.lineSeparator());
-                    }
-                    */
-                    writableFile.writeTo(); //was param = contentBuilder.toString()
                     break;
                 case "search":
                     System.out.print("Enter the name of the file or directory you want to search for: ");

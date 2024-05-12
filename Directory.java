@@ -4,9 +4,10 @@ import java.util.*;
 public class Directory implements AbstractFile {
     String name;
     ArrayList<AbstractFile> includedFiles = new ArrayList<AbstractFile>();
-    File directory;
+    File directory = new File("null");
+    Directory parentDir;
 
-    public Directory(String name) {
+    public Directory(String name, Directory currDir) {
         this.name = name;
         File f1 = new File(name);
         boolean bool = f1.mkdir();
@@ -18,6 +19,9 @@ public class Directory implements AbstractFile {
         }
     }
 
+    public void getPath(){
+        System.out.println(directory.getAbsolutePath());
+    }
     public void ls() {
         System.out.println("Current Directory: " + name);
         for (int i = 0; i < includedFiles.size(); i++) {

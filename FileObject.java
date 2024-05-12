@@ -40,16 +40,17 @@ public class FileObject implements AbstractFile {
         
     }
 
-    public void writeTo() {
+    public void writeTo(Scanner input) {
         try {
             FileWriter myWriter = new FileWriter(name);
-            Scanner input = new Scanner(System.in);
+            //Scanner input = new Scanner(System.in);
+            System.out.println("Enter what you want to write: ");
             String userInput = input.nextLine();
 
             myWriter.write(userInput);
 
             myWriter.close();
-            input.close();
+            //input.close();
 
         } catch (IOException e) {
             e.printStackTrace();
