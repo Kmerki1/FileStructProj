@@ -50,8 +50,8 @@ public class FileObject implements AbstractFile {
         return "File: " +name;
     }
     public void delete(){//deletes a file or folder in the directory
-        if (file.delete()) { 
-            System.out.println("Deleted the file: " + file.getName());
+        if (f1.delete()) { 
+            System.out.println("Deleted the file: " + f1.getName());
         }else{
             System.out.println("Failed to delete the file.");
         } 

@@ -53,7 +53,7 @@ public class Directory implements AbstractFile {
 
             }
         }
-        return null;
+        
     }
 
     public void rename(String newName) {
