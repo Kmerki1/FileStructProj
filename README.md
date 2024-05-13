@@ -5,7 +5,7 @@ Code can be downloaded from the GitHub,
 and ran through Visual Studio Code or other IDE.
 
 User must input a command, hit enter, and then give
-the file or directory that they want to work with.
+the file or directory that they want to work with, some commands may ask for additional input, like the write command.
 
 Commands:
 - create: Create files or folders
