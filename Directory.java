@@ -1,4 +1,8 @@
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Directory implements AbstractFile {
@@ -114,4 +118,20 @@ public class Directory implements AbstractFile {
         }
         return null;
     }
+
+    public void copyDirectory(String sourceDirectoryLocation, String destinationDirectoryLocation) 
+  throws IOException {
+    Files.walk(Paths.get(sourceDirectoryLocation))
+      .forEach(source -> {
+          Path destination = Paths.get(destinationDirectoryLocation, source.toString()
+            .substring(sourceDirectoryLocation.length()));
+          try {
+              Files.copy(source, destination);
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      });
+}
+
+
 }

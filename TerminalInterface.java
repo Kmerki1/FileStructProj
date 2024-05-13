@@ -191,6 +191,50 @@ public class TerminalInterface {
                         currDir = currDir.parentDir;
                     }
                     break;
+                case "copyNOTWORKING"://probs not working
+                    System.out.print("Enter the name of the directory you want to copy: ");
+                    String dir1 = scanner.nextLine();
+                    Directory copyThis = new Directory("null", currDir);
+                    Directory target = new Directory("null", currDir);
+                    boolean dir1Found = false;
+                    int j = 0;
+
+                    for (AbstractFile file : currDir.includedFiles) {
+                        if (file.getName().equalsIgnoreCase(dir1)) {
+                            System.out.println("copying: " + file.getInfo());
+                            copyThis = (Directory) currDir.includedFiles.get(j);
+                            dirFound = true;
+                            break;
+                        }
+                        j++;
+                    }
+                    if (!dir1Found) {
+                        System.out.println("Directory to copy not found.");
+                    }
+                    System.out.print("Enter the name of the directory you want to copy to: ");
+                    String dir2 = scanner.nextLine();
+                    int h = 0;
+                    for (AbstractFile file : currDir.includedFiles) {
+                        if (file.getName().equalsIgnoreCase(dir2)) {
+                            System.out.println("copying: " + file.getInfo());
+                            target = (Directory) currDir.includedFiles.get(h);
+                            dirFound = true;
+                            break;
+                        }
+                        h++;
+                    }
+                    if (!dir1Found) {
+                        System.out.println("Directory to copy to not found.");
+                    }
+                    try {
+                        currDir.copyDirectory(copyThis.directory.getAbsolutePath(), target.directory.getAbsolutePath());
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                    
+
+                    break;
+
 
                 case "exit":
                     System.out.println("Exiting...");
