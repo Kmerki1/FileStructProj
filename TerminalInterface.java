@@ -6,9 +6,10 @@ import java.util.ArrayList;
 
 public class TerminalInterface {
     
-    //private static List<AbstractFile> includedFiles = new ArrayList<>();
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        Directory currDir = new Directory("root",null);
+        Directory root = currDir;
         Scanner scanner = new Scanner(System.in);
 
         // Display initial message or prompt
@@ -46,43 +47,50 @@ public class TerminalInterface {
                         System.out.print("Enter the name of the file: ");
                         String fileName = scanner.nextLine();
                         FileObject file = new FileObject(fileName, currDir);
-                        currDir.includedFiles.add(file);
 
+                        currDir.add(file);
+                    
                     }else if (fileType.equals("directory")) {
                         System.out.print("Enter the name of the directory: ");
                         String name = scanner.nextLine();
                         Directory directory = new Directory(name, currDir);
-                        currDir.includedFiles.add(directory);
+                        currDir.add(directory);
                     }
                     break;
-                case "write":
-                    System.out.println("Enter the name of the file you want to write to: ");
-                    String fileName = scanner.nextLine();
 
-                    AbstractFile fileToWrite = null;
-                    for (AbstractFile file : currDir.includedFiles) {
+                case "read":
+                System.out.println("Enter the name of the file you want to read (must include '.txt'): ");
+                String fName = scanner.nextLine();
+
+                AbstractFile fileToRead = null;
+                for (AbstractFile file : currDir.getIncludedFiles()) {
+                    if (file.getName().equals(fName)) {
+                        fileToRead = file;
+                        break;
+                    }
+                }
+
+                if (fileToRead == null || !(fileToRead instanceof FileObject)) {
+                    System.out.println("File not found or it is not readable.");
+                    break;
+                }
+                ((FileObject) fileToRead).read();
+                break;
+
+
+                case "write":
+                    System.out.println("Enter the name of the file you want to write to (must include '.txt'): ");
+                    String fileName = scanner.nextLine();
+                    
+                    for (AbstractFile file : currDir.getIncludedFiles()) {
+
                         if (file.getName().equals(fileName)) {
-                            fileToWrite = file;
+                            ((FileObject) file).writeTo(scanner);
                             break;
                         }
                     }
 
-                    if (fileToWrite == null || !(fileToWrite instanceof FileObject)) {
-                        System.out.println("File not found or it is not writable.");
-                        break;
-                    }
 
-                    FileObject writableFile = (FileObject) fileToWrite;
-                    /*
-                    System.out.println("Enter the content you want to write to the file (type 'done' to finish): ");
-                    StringBuilder contentBuilder = new StringBuilder();
-                    String line;
-
-                    while (!(line = scanner.nextLine()).equalsIgnoreCase("done")) {
-                        contentBuilder.append(line).append(System.lineSeparator());
-                    }
-                    */
-                    writableFile.writeTo(); //was param = contentBuilder.toString()
                     break;
                 case "search":
                     System.out.print("Enter the name of the file or directory you want to search for: ");
@@ -90,7 +98,8 @@ public class TerminalInterface {
 
                     boolean searchFound = false;
 
-                    for (AbstractFile file : currDir.includedFiles) {
+
+                    for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equalsIgnoreCase(searchTarget)) {
                             System.out.println("Found: " + file.getInfo());
                             searchFound = true;
@@ -115,7 +124,9 @@ public class TerminalInterface {
                     
                     boolean renamed = false;
 
-                    for (AbstractFile file : currDir.includedFiles) {
+
+
+                    for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equalsIgnoreCase(oldName)) {
                             if (file instanceof FileObject) {
                                 FileObject fileObject = (FileObject) file;
@@ -131,8 +142,8 @@ public class TerminalInterface {
                         System.out.println("File not found or directory not found.");
                     }
                     break;
-                case "view":
-                    // To implement
+                case "ls":
+                    currDir.ls();
                     break;
                 case "delete":
                     // Delete switch case; works fine, I think
@@ -141,10 +152,11 @@ public class TerminalInterface {
 
                     boolean found = false;
 
-                    for (AbstractFile file : currDir.includedFiles) {
+
+                    for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equals(deleteTarget)) {
                             file.delete();
-                            currDir.includedFiles.remove(file);
+                            currDir.getIncludedFiles().remove(file);
                             found = true;
                             System.out.println(deleteTarget + " deleted successfully!");
                             break;
@@ -155,6 +167,7 @@ public class TerminalInterface {
                         System.out.println("File or directory not found.");
                     }
                     break;
+
                 case "jump":
                     System.out.print("Enter the name of the directory you want to go to: ");
                     String jumpDir = scanner.nextLine();
@@ -176,6 +189,7 @@ public class TerminalInterface {
                         System.out.println("Directory not found.");
                     }
                     break;
+
                 case "backout":
                     if(currDir.name == "root"){
                         System.out.println("Cannot back out of root");
@@ -183,16 +197,18 @@ public class TerminalInterface {
                         currDir = currDir.parentDir;
                     }
                     break;
+
                 case "exit":
                     System.out.println("Exiting...");
                     root.delete();
                     running = false;
+                    root.delete();
                     break;
                 default:
                     System.out.println("Invalid command! Please try again.");
             }
         }
-
+        
         // close the scanner
         scanner.close();
     }
@@ -205,6 +221,7 @@ public class TerminalInterface {
         System.out.println("- search: Search for files");
         System.out.println("- rename: Rename a file");
         System.out.println("- view: View files or folders");
+        System.out.println("- ls: show all files in current directory");
         System.out.println("- delete: Delete files or folders");
         System.out.println("- jump: Jump into directory");
         System.out.println("- backout: Back out of a directory");

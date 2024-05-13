@@ -7,6 +7,7 @@ public class Directory implements AbstractFile {
     File directory = new File("");
     Directory parentDir;
 
+
     public Directory(String name, Directory currDir) {
         this.name = name;
 
@@ -17,6 +18,7 @@ public class Directory implements AbstractFile {
             directory = new File(name);
         }
         boolean bool = directory.mkdir();
+
         if (bool) {
             System.out.println("Directory created: " + name);
             
@@ -25,6 +27,9 @@ public class Directory implements AbstractFile {
         }
     }
 
+    public void getPath(){
+        System.out.println(directory.getAbsolutePath());
+    }
     public void ls() {
         System.out.println("Current Directory: " + name);
         for (int i = 0; i < includedFiles.size(); i++) {

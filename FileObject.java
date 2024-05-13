@@ -10,7 +10,7 @@ public class FileObject implements AbstractFile {
 
     File f1;
 
-    public FileObject(String name,Directory currDir) {
+    public FileObject(String name, Directory currDir) {
         this.name = name;
         try {
             f1 = new File(currDir.directory.getAbsolutePath() + "\\"+ name);
@@ -40,16 +40,17 @@ public class FileObject implements AbstractFile {
         
     }
 
-    public void writeTo() {
+    public void writeTo(Scanner input) {
         try {
             FileWriter myWriter = new FileWriter(name);
-            Scanner input = new Scanner(System.in);
+            //Scanner input = new Scanner(System.in);
+            System.out.println("Enter what you want to write: ");
             String userInput = input.nextLine();
 
             myWriter.write(userInput);
 
             myWriter.close();
-            input.close();
+            //input.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +62,7 @@ public class FileObject implements AbstractFile {
     }
 
     public String getInfo(){
-        return "File: " +name;
+        return "File: " +name + "\n FilePath: " + f1.getAbsolutePath();
     }
     public void delete(){//deletes a file or folder in the directory
         if (f1.delete()) { 
