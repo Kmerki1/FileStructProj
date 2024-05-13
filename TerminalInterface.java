@@ -1,13 +1,12 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
 
 public class TerminalInterface {
     
-    
+
     public static void main(String[] args) {
         Directory currDir = new Directory("root",null);
         Directory root = currDir;
@@ -21,9 +20,17 @@ public class TerminalInterface {
 
         // Continue accepting commands until the user exits
         boolean running = true;
+        
+        Directory currDir = new Directory("root", null);
+        Directory root = currDir;
+
         while (running) {
+            
+            System.out.println("Current directory: " + currDir.name);
             System.out.print("Enter a command: ");
             String command = scanner.nextLine();
+
+            
 
             switch (command.toLowerCase()) {
                 case "create":
@@ -40,8 +47,9 @@ public class TerminalInterface {
                         System.out.print("Enter the name of the file: ");
                         String fileName = scanner.nextLine();
                         FileObject file = new FileObject(fileName, currDir);
+
                         currDir.add(file);
-                        
+                    
                     }else if (fileType.equals("directory")) {
                         System.out.print("Enter the name of the directory: ");
                         String name = scanner.nextLine();
@@ -69,12 +77,13 @@ public class TerminalInterface {
                 ((FileObject) fileToRead).read();
                 break;
 
+
                 case "write":
                     System.out.println("Enter the name of the file you want to write to (must include '.txt'): ");
                     String fileName = scanner.nextLine();
-
                     
                     for (AbstractFile file : currDir.getIncludedFiles()) {
+
                         if (file.getName().equals(fileName)) {
                             ((FileObject) file).writeTo(scanner);
                             break;
@@ -88,6 +97,7 @@ public class TerminalInterface {
                     String searchTarget = scanner.nextLine();
 
                     boolean searchFound = false;
+
 
                     for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equalsIgnoreCase(searchTarget)) {
@@ -113,6 +123,8 @@ public class TerminalInterface {
                     String newName = scanner.nextLine();
                     
                     boolean renamed = false;
+
+
 
                     for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equalsIgnoreCase(oldName)) {
@@ -140,6 +152,7 @@ public class TerminalInterface {
 
                     boolean found = false;
 
+
                     for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equals(deleteTarget)) {
                             file.delete();
@@ -154,7 +167,8 @@ public class TerminalInterface {
                         System.out.println("File or directory not found.");
                     }
                     break;
-                case "cd":
+
+                case "jump":
                     System.out.print("Enter the name of the directory you want to go to: ");
                     String jumpDir = scanner.nextLine();
 
@@ -168,7 +182,7 @@ public class TerminalInterface {
                             dirFound = true;
                             break;
                         }
-                        i++; 
+                        i++;
                     }
 
                     if (!dirFound) {
@@ -176,8 +190,17 @@ public class TerminalInterface {
                     }
                     break;
 
+                case "backout":
+                    if(currDir.name == "root"){
+                        System.out.println("Cannot back out of root");
+                    } else {
+                        currDir = currDir.parentDir;
+                    }
+                    break;
+
                 case "exit":
                     System.out.println("Exiting...");
+                    root.delete();
                     running = false;
                     root.delete();
                     break;
@@ -200,7 +223,8 @@ public class TerminalInterface {
         System.out.println("- view: View files or folders");
         System.out.println("- ls: show all files in current directory");
         System.out.println("- delete: Delete files or folders");
-        System.out.println("- cd: move to forward into a directory");
+        System.out.println("- jump: Jump into directory");
+        System.out.println("- backout: Back out of a directory");
         System.out.println("- exit: Exit the program");
     }
 }
