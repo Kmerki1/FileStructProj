@@ -37,6 +37,7 @@ public class Directory implements AbstractFile {
         for (int i = 0; i < includedFiles.size(); i++) {
             System.out.println(includedFiles.get(i).getInfo());
         }
+        System.out.println("-----------------------------");
     }
 
     public void add(AbstractFile file) {

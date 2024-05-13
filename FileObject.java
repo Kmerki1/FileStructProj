@@ -91,7 +91,7 @@ public class FileObject implements AbstractFile {
         File oldFile = new File(name);
         File newFile = new File(newName);
 
-        if (oldFile.renameTo(newFile)) {
+        if (oldFile.renameTo(newFile)){
             name = newName;
             System.out.println(oldName + " renamed to " + newName);
         } else {
