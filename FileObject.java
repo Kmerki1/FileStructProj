@@ -86,17 +86,10 @@ public class FileObject implements AbstractFile {
 
 
     // rename file; Ina
-    public void rename(String newName) {
-        String oldName = name;
-        File oldFile = new File(name);
-        File newFile = new File(newName);
-
-        if (oldFile.renameTo(newFile)){
-            name = newName;
-            System.out.println(oldName + " renamed to " + newName);
-        } else {
-            System.out.println("Failed to rename " + name + " to " + newName);
-        }
-
-    }
+    public void rename(String newName, Directory currDir) {
+        
+        f1.renameTo(new File(currDir.directory.getAbsolutePath() + "\\"+ newName));
+        this.name = newName;
+        System.out.println("Renamed successfully");
+    }    
 }

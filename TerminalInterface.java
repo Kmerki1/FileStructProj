@@ -128,7 +128,7 @@ public class TerminalInterface {
                         if (file.getName().equalsIgnoreCase(oldName)) {
                             if (file instanceof FileObject) {
                                 FileObject fileObject = (FileObject) file;
-                                fileObject.rename(newName);
+                                fileObject.rename(newName, currDir);
                             } else if (file instanceof Directory) {
                                 Directory directory = (Directory) file;
                                 directory.rename(newName);
