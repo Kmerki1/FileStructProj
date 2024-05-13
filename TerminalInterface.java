@@ -21,14 +21,11 @@ public class TerminalInterface {
         // Continue accepting commands until the user exits
         boolean running = true;
         
-
         while (running) {
             
             System.out.println("Current directory: " + currDir.name);
             System.out.print("Enter a command: ");
             String command = scanner.nextLine();
-
-            
 
             switch (command.toLowerCase()) {
                 case "create":
@@ -87,7 +84,6 @@ public class TerminalInterface {
                             break;
                         }
                     }
-
 
                     break;
                 case "search":
