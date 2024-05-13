@@ -21,8 +21,6 @@ public class TerminalInterface {
         // Continue accepting commands until the user exits
         boolean running = true;
         
-        Directory currDir = new Directory("root", null);
-        Directory root = currDir;
 
         while (running) {
             
