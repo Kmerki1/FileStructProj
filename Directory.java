@@ -4,18 +4,24 @@ import java.util.*;
 public class Directory implements AbstractFile {
     String name;
     ArrayList<AbstractFile> includedFiles = new ArrayList<AbstractFile>();
-    File directory = new File("null");
+    File directory = new File("");
     Directory parentDir;
+    File f1;
 
     public Directory(String name, Directory currDir) {
         this.name = name;
-        File f1 = new File(name);
+        if (currDir != null) {
+            f1 = new File(currDir.directory.getAbsolutePath() + "\\" + name);
+            parentDir = currDir;
+        } else {
+            f1 = new File(name);
+        }
         boolean bool = f1.mkdir();
         if (bool) {
             System.out.println("Directory created: " + name);
             directory = f1;
         } else {
-            System.out.println("Directory "+ name +" already exists");
+            System.out.println("Directory " + name + " already exists");
         }
     }
 

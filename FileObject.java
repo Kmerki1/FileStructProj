@@ -10,7 +10,7 @@ public class FileObject implements AbstractFile {
 
     File f1;
 
-    public FileObject(String name) {
+    public FileObject(String name, Directory currDir) {
         this.name = name;
         try {
             f1 = new File(name);
@@ -62,7 +62,7 @@ public class FileObject implements AbstractFile {
     }
 
     public String getInfo(){
-        return "File: " +name;
+        return "File: " +name + "\n FilePath: " + f1.getAbsolutePath();
     }
     public void delete(){//deletes a file or folder in the directory
         if (f1.delete()) { 

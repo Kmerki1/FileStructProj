@@ -7,9 +7,10 @@ import java.util.ArrayList;
 
 public class TerminalInterface {
     
-    private static List<AbstractFile> includedFiles = new ArrayList<>();
+    
     public static void main(String[] args) {
         Directory currDir = new Directory("root",null);
+        Directory root = currDir;
         Scanner scanner = new Scanner(System.in);
 
         // Display initial message or prompt
@@ -38,14 +39,14 @@ public class TerminalInterface {
                     if (fileType.equals("file")){
                         System.out.print("Enter the name of the file: ");
                         String fileName = scanner.nextLine();
-                        FileObject file = new FileObject(fileName);
-                        includedFiles.add(file);
+                        FileObject file = new FileObject(fileName, currDir);
+                        currDir.add(file);
                         
                     }else if (fileType.equals("directory")) {
                         System.out.print("Enter the name of the directory: ");
                         String name = scanner.nextLine();
                         Directory directory = new Directory(name, currDir);
-                        includedFiles.add(directory);
+                        currDir.add(directory);
                     }
                     break;
 
@@ -54,7 +55,7 @@ public class TerminalInterface {
                 String fName = scanner.nextLine();
 
                 AbstractFile fileToRead = null;
-                for (AbstractFile file : includedFiles) {
+                for (AbstractFile file : currDir.getIncludedFiles()) {
                     if (file.getName().equals(fName)) {
                         fileToRead = file;
                         break;
@@ -73,7 +74,7 @@ public class TerminalInterface {
                     String fileName = scanner.nextLine();
 
                     
-                    for (AbstractFile file : includedFiles) {
+                    for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equals(fileName)) {
                             ((FileObject) file).writeTo(scanner);
                             break;
@@ -88,7 +89,7 @@ public class TerminalInterface {
 
                     boolean searchFound = false;
 
-                    for (AbstractFile file : includedFiles) {
+                    for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equalsIgnoreCase(searchTarget)) {
                             System.out.println("Found: " + file.getInfo());
                             searchFound = true;
@@ -113,7 +114,7 @@ public class TerminalInterface {
                     
                     boolean renamed = false;
 
-                    for (AbstractFile file : includedFiles) {
+                    for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equalsIgnoreCase(oldName)) {
                             if (file instanceof FileObject) {
                                 FileObject fileObject = (FileObject) file;
@@ -129,8 +130,8 @@ public class TerminalInterface {
                         System.out.println("File not found or directory not found.");
                     }
                     break;
-                case "view":
-                    // To implement
+                case "ls":
+                    currDir.ls();
                     break;
                 case "delete":
                     // Delete switch case; works fine, I think
@@ -139,10 +140,10 @@ public class TerminalInterface {
 
                     boolean found = false;
 
-                    for (AbstractFile file : includedFiles) {
+                    for (AbstractFile file : currDir.getIncludedFiles()) {
                         if (file.getName().equals(deleteTarget)) {
                             file.delete();
-                            includedFiles.remove(file);
+                            currDir.getIncludedFiles().remove(file);
                             found = true;
                             System.out.println(deleteTarget + " deleted successfully!");
                             break;
@@ -153,15 +154,38 @@ public class TerminalInterface {
                         System.out.println("File or directory not found.");
                     }
                     break;
+                case "cd":
+                    System.out.print("Enter the name of the directory you want to go to: ");
+                    String jumpDir = scanner.nextLine();
+
+                    boolean dirFound = false;
+                    int i = 0;
+
+                    for (AbstractFile file : currDir.includedFiles) {
+                        if (file.getName().equalsIgnoreCase(jumpDir)) {
+                            System.out.println("Jumping to: " + file.getInfo());
+                            currDir = (Directory) currDir.includedFiles.get(i);
+                            dirFound = true;
+                            break;
+                        }
+                        i++; 
+                    }
+
+                    if (!dirFound) {
+                        System.out.println("Directory not found.");
+                    }
+                    break;
+
                 case "exit":
                     System.out.println("Exiting...");
                     running = false;
+                    root.delete();
                     break;
                 default:
                     System.out.println("Invalid command! Please try again.");
             }
         }
-
+        
         // close the scanner
         scanner.close();
     }
@@ -174,7 +198,9 @@ public class TerminalInterface {
         System.out.println("- search: Search for files");
         System.out.println("- rename: Rename a file");
         System.out.println("- view: View files or folders");
+        System.out.println("- ls: show all files in current directory");
         System.out.println("- delete: Delete files or folders");
+        System.out.println("- cd: move to forward into a directory");
         System.out.println("- exit: Exit the program");
     }
 }
