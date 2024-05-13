@@ -5,18 +5,18 @@ public class Directory implements AbstractFile {
     String name;
     ArrayList<AbstractFile> includedFiles = new ArrayList<AbstractFile>();
     File directory = new File("");
-    File f1;
     Directory parentDir;
 
     public Directory(String name, Directory currDir) {
         this.name = name;
+
         if (currDir != null) {
             parentDir = currDir;
-            f1 = new File(currDir.directory.getAbsolutePath() + "\\" + name);
+            directory = new File(currDir.directory.getAbsolutePath() + "\\" + name);
         } else {
-            f1 = new File(name);
+            directory = new File(name);
         }
-        boolean bool = f1.mkdir();
+        boolean bool = directory.mkdir();
         if (bool) {
             System.out.println("Directory created: " + name);
             

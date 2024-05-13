@@ -182,6 +182,7 @@ public class TerminalInterface {
                     } else {
                         currDir = currDir.parentDir;
                     }
+                    break;
                 case "exit":
                     System.out.println("Exiting...");
                     root.delete();
