@@ -10,10 +10,10 @@ public class FileObject implements AbstractFile {
 
     File f1;
 
-    public FileObject(String name) {
+    public FileObject(String name,Directory currDir) {
         this.name = name;
         try {
-            f1 = new File(name);
+            f1 = new File(currDir.directory.getAbsolutePath() + "\\"+ name);
             if (f1.createNewFile()) {
                 System.out.println("File created: " + f1.getName());
 
