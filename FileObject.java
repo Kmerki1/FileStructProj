@@ -42,7 +42,7 @@ public class FileObject implements AbstractFile {
 
     public void writeTo(Scanner input) {
         try {
-            FileWriter myWriter = new FileWriter(name);
+            FileWriter myWriter = new FileWriter(f1.getAbsolutePath());
             //Scanner input = new Scanner(System.in);
             System.out.println("Enter what you want to write: ");
             String userInput = input.nextLine();
