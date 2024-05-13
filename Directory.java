@@ -31,6 +31,8 @@ public class Directory implements AbstractFile {
         System.out.println(directory.getAbsolutePath());
     }
     public void ls() {
+        System.out.println();
+        System.out.println("----------ls output----------");
         System.out.println("Current Directory: " + name);
         for (int i = 0; i < includedFiles.size(); i++) {
             System.out.println(includedFiles.get(i).getInfo());
